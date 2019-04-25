@@ -1,0 +1,14 @@
+task buildDocker(dependsOn: 'build') {
+    doLast {
+        exec {
+            commandLine 'docker', 'build', '-f', 'gradle/Dockerfile', '-t', 'chat', 'build/libs/'
+        }
+
+        def springProfile = 'SPRING_PROFILES_ACTIVE=prod'
+        def database = 'chatdb'
+        def pathStorage = '/root/chat/storage:/static/storage'
+        exec {
+            commandLine 'docker', 'run', '--name', 'chat', '-d', '-p', '80:8080', '-v', pathStorage, '--restart', 'always', '--link', database, '-e', springProfile, 'chat'
+        }
+    }
+}
