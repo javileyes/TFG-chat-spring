@@ -47,7 +47,6 @@ class MessageService {
         message.date = DateTime.now()
         message = messageRepository.save(message)
 
-//        firebaseTool.send(chat.participants.stream().map { user -> user.id!! }.collect(Collectors.toList()), message)
         firebaseTool.send(chat.participants, message)
 
         return message
