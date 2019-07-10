@@ -1,0 +1,11 @@
+server:
+    port: 8761 # default server which others try to connect with eureka
+
+eureka:
+    client:
+        register-with-eureka: false # if you want to have just one eureka server to avoid warnings
+        fetch-registry: false # if you want to have just one eureka server to avoid warnings
+    instance:
+        prefer-ip-address: true
+
+

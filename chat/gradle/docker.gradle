@@ -1,0 +1,39 @@
+task buildDocker(dependsOn: 'build') {
+    doLast {
+        exec {
+            commandLine 'docker', 'build', '-f', 'gradle/Dockerfile', '-t', 'chat', 'build/libs/'
+        }
+
+        def springProfile = 'SPRING_PROFILES_ACTIVE=prod'
+        def pathStorage = '/root/chat/storage:/static/storage'
+        exec {
+            commandLine 'docker', 'run', '-d',
+                    '--name', 'chat',
+                    '--network', 'chat',
+                    '-p', '8081:8081',
+                    '-v', pathStorage,
+                    '--restart', 'always',
+                    '-e', springProfile, 'chat'
+        }
+    }
+}
+
+task buildDockerExtern(dependsOn: 'build') {
+    doLast {
+        exec {
+            commandLine 'docker', 'build', '-f', 'gradle/Dockerfile', '-t', 'chat', 'build/libs/'
+        }
+
+        def springProfile = 'SPRING_PROFILES_ACTIVE=extern'
+        def pathStorage = '/root/chat/storage:/static/storage'
+        exec {
+            commandLine 'docker', 'run', '-d',
+                    '--name', 'chat',
+                    '--network', 'chat',
+                    '-p', '8081:8081',
+                    '-v', pathStorage,
+                    '--restart', 'always',
+                    '-e', springProfile, 'chat'
+        }
+    }
+}

@@ -1,0 +1,17 @@
+task buildDocker(dependsOn: 'build') {
+    doLast {
+        exec {
+            commandLine 'docker', 'build', '-f', 'gradle/Dockerfile', '-t', 'eureka', 'build/libs/'
+        }
+
+        def springProfile = 'SPRING_PROFILES_ACTIVE=prod'
+        exec {
+            commandLine 'docker', 'run', '-d',
+                    '--name', 'eureka',
+                    '--network', 'chat',
+                    '-p', '8761:8761',
+                    '--restart', 'always',
+                    '-e', springProfile, 'eureka'
+        }
+    }
+}

@@ -1,0 +1,15 @@
+spring:
+    application:
+        name: gateway
+
+zuul:
+#    prefix: /gateway # reverse proxy prefix i.e localhost:8080/gateway/chat endpoint
+    routes:
+        chat: /**
+    add-host-header: true
+    ignore-security-headers: false
+    sensitive-headers:
+
+ribbon:
+    ConnectTimeout: 5000
+    ReadTimeout: 5000
